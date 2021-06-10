@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 
@@ -21,6 +23,11 @@ class UserController extends Controller
     {
         parent::__construct();
         $this->new_user = new User();
+
+        $this->middleware(function($request,$next){
+            if(Gate::allows('users'))return $next($request);
+            abort(403, "Anda tidak memiliki cukup hak akses");                         
+         });
     }
 
     public function index(Request $request)
@@ -55,19 +62,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $request->validate([
-            "name"=>"required|min:5|max:20|unique:users,name",
-            // "username"=>"required",
-            "email"=>"required|min:5|max:30|unique:users,email",
-            "password"=>"required|string|min:8|confirmed",
+
+        $rules = [
+            "name" => "required|min:4",
+            "email" => "required|min:4|max:30|unique:users,email",
+            "password"=>"required|string|min:8|confirmed",            
             "role"=>"required",
             "status"=>"required",
-            "foto"=>"required|mimes:jpg,png,jpeg|max:2000",
-            "tandatangan"=>"required|mimes:jpg,png,jpeg|max:2000"
-        ]);
-        // dd($request->all());
-        // $this->new_user->username = $request->username;
+            "foto" => "required|max:2000|mimes:png,jpg,jpeg",
+            "tandatangan" => "required|max:2000|mimes:png,jpg,jpeg",
+        ];
+
+        $messages = [
+            'required' => ":attribute tidak boleh kosong!",
+            'min' => ":attribute karakter terlalu pendek",            
+            'mimes' => ":attribute Ekstensi errors, silahkan gunakan, .jpeg, .png atau .jpg",            
+            'size' => "ukuran :attribute minimal 2MB"
+        ];
+
+        $this->validate($request,$rules,$messages);       
         $this->new_user->name = $request->name;
         $this->new_user->email = $request->email;        
         $this->new_user->role= json_encode($request->role);        
@@ -126,20 +139,28 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {         
-        $request->validate([
-            "name"=>"required|min:5|max:20",            
-            "email"=>"required|min:5|max:30",            
+        $rules = [
+            "name" => "required|min:4|max:40",
+            "email" => "min:4|max:40",                 
             "role"=>"required",
             "status"=>"required",
-            "foto"=>"mimes:jpg,png,jpeg|max:2000",
-            "tandatangan"=>"mimes:jpg,png,jpeg|max:2000"
-        ]);
+            "foto" => "max:2000|mimes:png,jpg,jpeg",
+            "tandatangan" => "max:1000|mimes:png,jpg,jpeg",
+        ];
 
+        $messages = [
+            'required' => ":attribute tidak boleh kosong!",
+            'min' => ":attribute karakter terlalu pendek",            
+            'mimes' => ":attribute Ekstensi errors, silahkan gunakan, .jpeg, .png atau .jpg",            
+            'foto.max' => "ukuran :attribute minimal 2MB",
+            'tandatangan.max' => "ukuran :attribute minimal 2MB",
+            'unique'=>":attribute telah digunakan"
+        ];
+
+        $this->validate($request,$rules,$messages);       
 
         $user_edit = User::find($id);
-        $user_edit->name = $request->name;        
-        $last_fp = $user_edit->foto;
-        $last_ttd = $user_edit->tandatangan;                
+        $user_edit->name = $request->name;                
         $user_edit->status = $request->status;
         $user_edit->email = $request->email;        
         $user_edit->role = $request->role;

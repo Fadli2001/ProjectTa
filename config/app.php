@@ -1,5 +1,7 @@
 <?php
 
+use function PHPSTORM_META\map;
+
 return [
 
     /*
@@ -67,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'ASIA/jakarta',
+    'timezone' => 'ASIA/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -229,5 +231,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
+    "timezone" => "Asia/Jakarta",
+    "locale" => "id",
+    "faker_locale" => "id_ID"
 
 ];

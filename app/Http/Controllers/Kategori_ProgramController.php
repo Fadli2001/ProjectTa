@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori_Pogram;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 
 
@@ -17,7 +18,12 @@ class Kategori_ProgramController extends Controller
     public $new_kategori;
     public function __construct()
     {   
+        parent::__construct();
         $this->new_kategori= new Kategori_Pogram();
+        $this->middleware(function($request,$next){
+            if(Gate::allows('kategori_program'))return $next($request);
+            abort(403, "Anda tidak memiliki cukup hak akses");                         
+         });
     }
     public function index(Request $request)
     {

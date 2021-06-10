@@ -21979,12 +21979,13 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
 .dark-mode .invoice {
   background-color: #343a40;
 }
+/* style="border-radius: 50%;object-fit: cover; border: 4px solid #3c8dbc ; padding: 3px" */
 
 .profile-user-img {
-  border: 3px solid #adb5bd;
-  margin: 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #3c8dbc;
   padding: 3px;
-  width: 100px;
 }
 
 .profile-username {

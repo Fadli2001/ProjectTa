@@ -7,14 +7,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>@yield('title')</title>
+  <title>Proposal Approving</title>
+
+  <link rel="shortcut icon" type="image/jpg" href="{{asset('template')}}/dist/img/proposalogo2.png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{asset('template')}}/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('template')}}/dist/css/adminlte.min.css">
+  {{-- aos --}}
+  <link rel="stylesheet" href="{{asset('template')}}/dist/css/aos.css">
 
   {{-- checkbox custom  --}}
   <link rel="stylesheet" href="{{asset('template')}}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
@@ -29,135 +36,172 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('template')}}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="{{asset('template')}}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="{{asset('template')}}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  
+
+  <style>
+    .dashboard_box{
+       box-shadow: 0px 4px 15px rgb(0, 0, 0, 0.5);
+       transition: 0.3s;
+    }
+    .dashboard_box:hover{
+      transform: scale(1.03);
+      box-shadow: 0px 4px 15px rgb(0, 0, 0, 0.1);
+    }
+    .box_shadow{
+      box-shadow: 0px 4px 15px rgb(0, 0, 0, 0.2);
+    }
+    /* style="border-radius: 50%;object-fit: cover; border: 3px solid #3c8dbc ; padding: 3px" */
+    .image_profile{
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #3c8dbc;
+      padding: 3px;
+    }
+
+    *{
+      font-family: 'Source Sans Pro', sans-serif;!important
+    }
+
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header navbar navbar-expand navbar-light" style="background-color:rgb(42, 96, 120) ">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{asset('template')}}/index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars text-white"></i></a>
+      </li>     
     </ul>
-
-    <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
-
-    <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">      
       <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" >
+          <i class="far fa-bell text-white"></i>
+          @php
+              $notif = \App\Models\Proposal::notif();
+          @endphp
+          @if (count($notif) >= 1)              
+          <span class="badge badge-warning navbar-badge">
+          {{count($notif)}}
+          </span>                        
+          @endif
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">     
+          @foreach ($notif as $item)
+            <a href="{{route("proposal.read",$item->id)}}" class="dropdown-item">
+              <i class="fas fa-envelope mr-2"></i> {{$item->no_ajuan}} 
+              <span class="float-right text-muted text-sm">{{$item->status}}</span>
+            </a>
+          @endforeach        
+        </div>
+      </li>
+      <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <i class="fa fa-user-cog text-white"></i>          
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">            
         </div>
-          <span class="dropdown-header">15 Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <a href="{{route("user.setting")}}" class="dropdown-item">
+            <i class="fas fa-cogs mr-2"></i> Setting Profile           
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <button type="button" class="btn btn-danger dropdown-item" data-toggle="modal" data-target="#logout">          
+            <i class="fas fa-sign-out-alt mr-2"></i>  
+            {{ __('Logout') }} 
+          </button>        
         </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
+          <i class="fas fa-expand-arrows-alt text-white"></i>
         </a>
       </li>
-      <li class="nav-item">
-         <form id="logout-form" action="{{ route('logout') }}" method="POST" >
-          @csrf
-          <button class="dropdown-item mt-1 " type="submit">
-            <i class="fa fa-sign-out-alt">
-            </i>
-              {{ __('Logout') }}
-          </button>
-            </form>
-              
-            </li>
-          </ul>
+      </ul>
         </nav>
+        <div class="modal fade" id="logout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog ">
+            <div class="modal-content bg-info">
+              <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Logout </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Apakah Anda ingin keluar dari Aplikasi ?
+              </div>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" >
+                @csrf                  
+              <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Tidak</button>
+                    <button type="submit" class="btn btn-outline-light float-right" >Ya</button>
+              </div>
+                </form>
+            </div>
+          </div>
+        </div>
   <!-- /.navbar -->
-
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:rgb(0, 28, 31)" >
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="{{asset('template')}}/dist/img/proposalogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <a href="#" class="brand-link">
+      <img src="{{asset('template')}}/dist/img/proposalogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" >
       <span class="brand-text font-weight-light">Proposal Approving </span>
     </a>
-
-    <!-- Sidebar -->
+ 
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="{{asset('image/'. Auth::user()->foto)}}" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
-        </div>
+      <div class="brand-link">
+        {{-- <div class="image"> --}}
+          <a href="{{route("user.setting")}}">
+            <img src="{{asset('image/'.Auth::user()->foto)}}" class="" style="border-radius: 50%;object-fit: cover;" width="37" height="37" alt="User Image">
+          </a>
+        {{-- </div> --}}
+        <span class="brand-text" style="display: inline-block;">
+          <a href="{{route("user.setting")}}" class="text-md ml-2">{{Auth::user()->name}}</a>
+        </span>
+        
       </div>
 
-
+      <!-- SidebarSearch Form -->
+    
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-  
-            <a href="{{url('home')}}" class="nav-link ">
-              <i class="nav-icon fas fa-tachometer-alt mr-2"></i>
-              <p>
-                Dashboard
-                
-              </p>
-            </a>
-          
+               <li class="nav-item">
+                <a href="{{route("dashboard")}}" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+
+                  <p>
+                    Dashboard                    
+                  </p>
+                </a>
+              </li>         
+              <li class="nav-item">
+                <a href="{{route('proposal')}}" class="nav-link">
+                  <i class="nav-icon fas fa-paste"></i>
+
+                  <p>
+                    Proposal                    
+                  </p>
+                </a>
+              </li>                 
+            @php
+            $roles = json_decode(Auth::user()->role)
+            @endphp
+           @if ((in_array('ADMIN',$roles)))
+
             <li class="nav-item">
               <a href="{{url('user')}}" class="nav-link">
                 <i class="fa fa-users nav-icon"></i>
                 <p>Manage Users</p>
               </a>
             </li>
-              <li class="nav-item">
-                <a href="{{route('proposal')}}" class="nav-link ">
-                  <i class="far fa-sticky-note nav-icon"></i>
-                  <p>Proposal</p>
-                </a>
-              </li>
               <li class="nav-item">
                 <a href="{{route('kategori_program')}}" class="nav-link">
                   <i class="far fa-clone nav-icon"></i>
@@ -169,78 +213,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <i class="far fa-user nav-icon"></i>
                   <p>Asnaf Pemerima Manfaat</p>
                 </a>
-              </li>      
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fa fa-file-import nav-icon"></i>
-                  <p>Pengajuan Dana</p>
-                </a>
-              </li>     
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fa fa-receipt nav-icon"></i>
-                  <p>Rincian Pengajuan</p>
-                </a>
-              </li>           
-          </li>
-        
+              </li>
+             
+          @endif                                     
+         
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
   </aside>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <div class="flash" data-flash="{{session('status')}}"></div>
-    <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        {{-- <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Starter Page</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row --> --}}
         @yield('container')
-      </div><!-- /.container-fluid -->
+      </div>
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
   </div>
-    <!-- /.content -->
-  <!-- /.content-wrapper -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-    <div class="p-3">
-      <h5>Title</h5>
-      <p>Sidebar content</p>
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
-    </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2020 <a href="{{asset('template')}}/https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  <footer class="main-footer text-center">
+    <strong>Copyright &copy;Proposal Approved YBM JBT.</strong> 2021 All rights reserved.
   </footer>
 </div>
-<!-- ./wrapper -->
-
-<!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
 <script src="{{asset('template')}}/plugins/jquery/jquery.min.js"></script>
@@ -249,8 +242,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{{asset('template')}}/dist/js/adminlte.min.js"></script>
 
+{{-- aos.js --}}
+<script src="{{asset('template')}}/dist/js/aos.js"></script>
+
 {{-- dropzonejs --}}
 <script src="{{asset('template')}}/plugins/dropzone/min/dropzone.min.js"></script>
+ 
+{{-- chartjs --}}
+<script src="{{asset('template')}}/plugins/chart.js/Chart.min.js"></script>
+
+{{-- Donut Chart --}}
+<script src="{{asset('template')}}/plugins/flot/plugins/jquery.flot.pie.js"></script>
+
+<script src="{{asset('template')}}/dist/js/demo.js"></script>
 
 {{-- data table  --}}
 <script src="{{asset('template')}}/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -267,24 +271,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{asset('template')}}/dist/sweetalert/sweetalert2.min.js"></script>
 <script>
 $("#datauser").DataTable();
-    var flash = $('.flash').data('flash');
-      // console.log(flash)
+    var flash = $('.flash').data('flash');      
       if(flash != ""){
         Swal.fire({
           icon: 'succes',
-          title: 'succes',
-          text: flash
-        // footer: '<a href>Why do I have this issue?</a>'
+          title: 'Succes',
+          text: flash       
         });
-      }
-
-    // delete 
-
-    function deleted(e) {
+      }    
+    function deleted(e) {      
     Swal.fire({
-      title: 'Anda yakin?',
-      text: "tekan tombol oke untuk menghapus data",
-      icon: 'warning',
+      title: 'Anda yakin Ingin Menghapus Data?',
+      text: "Data tidak dapat dikembalikan!",
+      icon: 'question',
       showCancelButton: true,
       confirmButtonColor:'#149837',
       cancelButtonColor:'#981414'
@@ -295,7 +294,13 @@ $("#datauser").DataTable();
     }) 
   }
  
-</script>
+</script> 
+
+
 @yield('script')
+<script>
+  AOS.init();
+</script>
+
 </body>
 </html>

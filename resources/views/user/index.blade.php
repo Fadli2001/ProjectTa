@@ -4,18 +4,17 @@
 
 <div class="row">  
     <div class="col-md-12 ">
-      <div class="card">
+      <div class="card box_shadow">
         <div class="card-header">
-          <h3 class="float-left">Data User</h3>
-          
+          <h3 class="float-left text-bold">Data User</h3>          
           <div class="float-right">
             <a href="{{route('user.create')}}">
-              <button type="button" class="btn bg-gradient-info"> <i class="fa fa-user-plus"></i> Add User</button>
+              <button type="button" class="btn bg-lightblue color-palette"> <i class="fa fa-user-plus"></i> Tambah User</button>
             </a>
           </div>              
         </div>      
         <div class="card-body">
-          <table id="datauser" class="table table-striped">
+          <table id="datauser" class="table table-bordered table-striped table-responsive-sm">
             <thead>
               <tr>
                 <th>No</th>
@@ -35,7 +34,7 @@
                     <td>{{++$no}}</td>
                     <td>
                       <div class="image">
-                        <img class=" elevation-2" style="border-radius:30px" width="50" src="{{asset ("image/" .$item->foto)}}" alt="">
+                        <img class=" elevation-2" style="border-radius: 50%;object-fit: cover;" width="40" height="40" src="{{asset ("image/" .$item->foto)}}" alt="">
                       </div>
                     </td>
                     <td class="pt-3" >{{$item->name}}</td>
@@ -65,13 +64,12 @@
                       @endif
                     </td>
                     <td>
-                      <a style="text-decoration: none" href="{{ route('user.edit',$item->id) }}"><button type="button" class="btn bg-gradient-warning mr-1"><i class="fa fa-edit"></i></button></a>
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn bg-gradient-primary btn-detail mr-1" data-toggle="modal" data-target="#exampleModal" data-id="{{$item->id}}">
-                        <i class="fa fa-eye"></i>
+                      <a style="text-decoration: none" href="{{ route('user.edit',$item->id) }}"><button type="button" class="btn bg-gradient-info btn-sm my-1"><i class="fas fa-pencil-alt"></i> Edit</button></a>                      
+                      <a style="text-decoration: none" onclick="deleted(this)" data-href="{{ route('user.destroy',$item->id) }}"><button type="button" class="btn bg-gradient-danger btn-sm my-1"><i class="fas fa-trash"></i> hapus</button></a>                      
+                      <button type="button" class="btn btn-detail bg-gradient-primary btn-sm mr-1 my-1" data-toggle="modal" data-target="#exampleModal" data-id="{{$item->id}}">
+                        <i class="fas fa-folder"></i> View
                       </button>                               
-                      <a style="text-decoration: none" onclick="deleted(this)" data-href="{{ route('user.destroy',$item->id) }}"><button type="button" class="btn bg-gradient-danger"><i class="far fa-trash-alt"></i></button></a>                      
-                    </td>
+                    </td>                   
                 </tr>
                 @endforeach
               
@@ -92,7 +90,7 @@
       <div class="modal-dialog  modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Detail Data User</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -138,10 +136,10 @@
         let str = '';
         role.forEach(el => { str += `<span> ${el} /</span>`} )  
         $('.modal-body').html(`
-          <div class="card card-info card-outline">
+          <div class="card card-lightblue card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-              <img class="profile-user-img img-fluid img-circle"  src="{{ asset('image')}}/${result.foto}" alt="User profile picture">
+              <img class="image_profile" width="155" height="155"  src="{{ asset('image')}}/${result.foto}" alt="User profile picture">
                  
                 </div>
 

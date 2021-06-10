@@ -4,13 +4,13 @@
 <div class="row">
   <div class="col-md-12">
       <a  href="{{route('kategori_program')}}">
-          <button type="button" class="btn bg-gradient-info d-flex align-items-center"> <i class="fa fa-arrow-alt-circle-left mr-1"></i> Kembali</button>
+          <button type="button" class="btn bg-gradient-info d-flex align-items-center box_shadow"> <i class="fa fa-arrow-alt-circle-left mr-1"></i> Kembali</button>
       </a>
   </div>
 </div>
 <div class="row mt-2">  
     <div class="col-md-4">
-        <div class="card card-info">
+        <div class="card card-info box_shadow">
             <div class="card-header">
               <h3 class="card-title">Tambah Kategori </h3>
             </div>

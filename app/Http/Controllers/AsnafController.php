@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asnaf;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class AsnafController extends Controller
@@ -16,7 +17,13 @@ class AsnafController extends Controller
     public $new_asnaf;
     public function __construct()
     {   
+        parent::__construct();
         $this->new_asnaf= new Asnaf();
+
+        $this->middleware(function($request,$next){
+            if(Gate::allows('asnaf'))return $next($request);
+            abort(403, "Anda tidak memiliki cukup hak akses");                         
+         });
     }
     public function index(Request $request)
     {        
